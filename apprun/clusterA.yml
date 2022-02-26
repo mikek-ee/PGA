@@ -5,6 +5,10 @@
   connection: local
 
   tasks:
+  - name: Mark node info
+    ansible.builtin.file:
+      path: /clusterA.txt
+      state: touch
   - name: Print debug message
     debug:
       msg: Hello, world!

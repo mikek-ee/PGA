@@ -1,6 +1,6 @@
 config:
   PGA:appName: PGA
-  PGA:appVer: "1"
+  PGA:appVer: "23882d28ec6e296d41385aa2130e5b3584a0622a"
   PGA:keyName: rhel_ire
   PGA:repoURL: https://github.com/mikek-ee/PGA
   aws:region: eu-west-1

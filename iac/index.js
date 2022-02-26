@@ -75,6 +75,9 @@ ami.then(ami => {
             }
         }],
         metadataOptions: {
+            httpEndpoint: "enabled",
+            httpTokens: "optional",
+            httpPutResponseHopLimit: 1,
             instanceMetadataTags: "enabled",
         },
         userData: resourceConf.rendered,
@@ -96,6 +99,9 @@ ami.then(ami => {
             }
         }],
         metadataOptions: {
+            httpEndpoint: "enabled",
+            httpTokens: "optional",
+            httpPutResponseHopLimit: 1,
             instanceMetadataTags: "enabled",
         },
         userData: resourceConf.rendered,
