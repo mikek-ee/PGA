@@ -94,7 +94,7 @@ ami.then(ami => {
             tags: {
                 appName,
                 appVer,
-                appRole: "clusterA",
+                appRole: "clusterB",
                 repoURL,
             }
         }],

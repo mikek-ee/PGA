@@ -1,23 +1,6 @@
 #cloud-config
-write_files:
-- content: |
-    #!/bin/bash
-
-    ansibleCmd=/usr/local/bin/ansible-pull
-    repoURL=$(curl --silent http://169.254.169.254/latest/meta-data/tags/instance/repoURL)
-    appRole=$(curl --silent http://169.254.169.254/latest/meta-data/tags/instance/appRole)
-    appVer=$(curl --silent http://169.254.169.254/latest/meta-data/tags/instance/appVer)
-
-    $ansibleCmd -U $repoURL --full -C $appVer apprun/${appRole}.yml
-
-  owner: root:root
-  path: /usr/local/run-ansible-pull.sh
-  permissions: '0755'
-  
-
 bootcmd:
   - yum install -y git
   - yum install -y python3-pip
   - pip3 install ansible
-  - /usr/local/run-ansible-pull.sh
-  
+  - /usr/local/bin/ansible-pull -U $(curl --silent http://169.254.169.254/latest/meta-data/tags/instance/repoURL) --full -C $(curl --silent http://169.254.169.254/latest/meta-data/tags/instance/appVer) apprun/$(curl --silent http://169.254.169.254/latest/meta-data/tags/instance/appRole).yml
