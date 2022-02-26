@@ -2,6 +2,7 @@
 const pulumi = require("@pulumi/pulumi");
 const { ec2, autoscaling, iam } = require("@pulumi/aws");
 const cloudInit = require("@pulumi/cloudinit");
+const { readFileSync } = require("fs")
 
 const config = new pulumi.Config();
 
@@ -50,11 +51,10 @@ const sg = new ec2.SecurityGroup("securityGroup", {
 
 const resourceConf = new cloudInit.Config("cloudinit", {
     gzip: false,
-    base64Encode: false,
+    base64Encode: true,
     parts: [{
-        contentType: "text/x-shellscript",
-        content: "",
-        filename: "/bin/get-aws-tag"
+        contentType: "text/cloud-config",
+        content: readFileSync("scripts/cloud-config.yaml").toString(), // TODO: file pathing
     }]
 })
 
@@ -74,7 +74,10 @@ ami.then(ami => {
                 repoURL,
             }
         }],
-        userData: "",
+        metadataOptions: {
+            instanceMetadataTags: "enabled",
+        },
+        userData: resourceConf.rendered,
         vpcSecurityGroupIds: [sg.id],
     })
 
@@ -92,7 +95,10 @@ ami.then(ami => {
                 repoURL,
             }
         }],
-        userData: "",
+        metadataOptions: {
+            instanceMetadataTags: "enabled",
+        },
+        userData: resourceConf.rendered,
         vpcSecurityGroupIds: [sg.id],
     })
 
